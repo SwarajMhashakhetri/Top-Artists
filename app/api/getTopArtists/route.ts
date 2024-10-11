@@ -20,8 +20,9 @@ export async function GET() {
   const artists: Artist[] = data.items.map((item: any) => ({
     id: item.id,
     name: item.name,
-    uri: item.uri
+    uri: item.uri,
+    imageUrl: item.images[0]?.url || '' 
   }))
-  
+
   return NextResponse.json(artists)
 }

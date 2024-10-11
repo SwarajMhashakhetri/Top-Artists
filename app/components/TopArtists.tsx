@@ -34,10 +34,17 @@ export function TopArtists() {
   if (!session) return <p>Please sign in to view your top artists.</p>
 
   return (
-    <ul className="space-y-4">
+    <ul className="space-y-6">
       {topArtists.map((artist) => (
-        <li key={artist.id} className="flex items-center justify-between bg-gray-100 p-4 rounded-lg">
-          <span>{artist.name}</span>
+        <li key={artist.id} className="flex items-center space-x-4 bg-gray-100 p-4 rounded-lg">
+          <img 
+            src={artist.imageUrl || '/api/placeholder/80/80'} 
+            alt={`${artist.name}`}
+            className="w-20 h-20 object-cover rounded-full"
+          />
+          <div className="flex-grow">
+            <h3 className="text-lg font-semibold">{artist.name}</h3>
+          </div>
           <button 
             onClick={() => handlePlay(artist.uri)}
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
