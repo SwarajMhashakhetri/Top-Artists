@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   const response = await fetch('https://api.spotify.com/v1/me/player/play', {
     method: 'PUT',
-    headers: {
+    headers: {  
       Authorization: `Bearer ${session.accessToken}`,
       'Content-Type': 'application/json',
     },
