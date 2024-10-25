@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
+import  { NextAuthOptions } from "next-auth"
 import SpotifyProvider from "next-auth/providers/spotify"
 export const authOptions: NextAuthOptions = {
     providers: [
