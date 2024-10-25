@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/app/swarajIsStupid"
 import { Track } from "@/types/spotify";
 
 export async function GET() {
