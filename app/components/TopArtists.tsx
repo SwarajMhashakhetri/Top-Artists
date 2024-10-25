@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Play } from "lucide-react"
+import { Appbar } from './Appbar';
 
 interface Artist {
   id: string;
@@ -14,14 +13,14 @@ interface Artist {
 }
 
 export default function TopArtists() {
-  const { data: session, status } = useSession()
+  const session = useSession()
   const [topArtists, setTopArtists] = useState<Artist[]>([])
 
   useEffect(() => {
-    if (session) {
+    if (session.status === 'authenticated') {
       fetchTopArtists()
     }
-  }, [session])
+  }, [session.status])
 
   const fetchTopArtists = async () => {
     try {
@@ -36,53 +35,35 @@ export default function TopArtists() {
     }
   }
 
-  const handlePlay = async (uri: string) => {
-    try {
-      const response = await fetch('/api/playSong', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ uri }),
-      })
-      if (!response.ok) {
-        throw new Error('Failed to play song')
-      }
-    } catch (error) {
-      console.error('Error playing song:', error)
-    }
-  }
-
-  if (status === 'loading') return <p className="text-white">Loading...</p>
-  if (!session) return <p className="text-white">Please sign in to view your top artists.</p>
+  if (session.status === 'loading') return <p className="text-white text-center text-xl">Loading...</p>
+  if (session.status === 'unauthenticated') return <p className="text-white text-center text-xl">Please sign in to view your top artists.</p>
 
   return (
-    <div className="container mx-auto px-4 bg-black min-h-screen py-8">
-      <h2 className="text-2xl font-bold mb-6 text-white">Your Top Artists</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <>
+    <Appbar />
+    <div className="container mx-auto px-4 bg-gradient-to-b from-black to-zinc-900 min-h-screen py-12">
+      <h2 className="text-4xl font-bold mb-8 text-white text-center">Your Top Artists</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {topArtists.map((artist) => (
-          <Card key={artist.id} className="bg-zinc-900 border-none overflow-hidden flex flex-col">
-            <CardContent className="p-0 flex-grow">
+          <Card key={artist.id} className="bg-transparent border-none overflow-hidden flex flex-col transition-all duration-300 group hover:bg-zinc-800/30 hover:shadow-lg hover:shadow-green-500/10">
+            <CardContent className="p-0 flex-grow relative">
               <div className="w-full aspect-square overflow-hidden">
                 <img 
                   src={artist.imageUrl || '/placeholder.svg?height=300&width=300'} 
                   alt={`${artist.name}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </CardContent>
-            <CardFooter className="flex flex-col items-start p-4 bg-zinc-800">
-              <h3 className="text-lg font-semibold mb-2 text-white">{artist.name}</h3>
-              <Button 
-                onClick={() => handlePlay(artist.uri)}
-                className="w-full bg-green-500 hover:bg-green-600 text-black"
-              >
-                <Play className="mr-2 h-4 w-4" /> Play Top Track
-              </Button>
+            <CardFooter className="flex flex-col items-start p-4 bg-transparent">
+              <h3 className="text-lg font-semibold mb-1 text-white group-hover:text-green-400 transition-colors duration-300">{artist.name}</h3>
+              <p className="text-sm text-zinc-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Top Artist</p>
             </CardFooter>
           </Card>
         ))}
       </div>
     </div>
+    </>
   )
 }

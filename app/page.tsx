@@ -7,8 +7,6 @@ export default function Home() {
     <main className="font-sans">
       <Appbar />
       <Dashboard />
-      <div className="container mx-auto px-4 py-8">
-      </div>
     </main>
   )
 }
