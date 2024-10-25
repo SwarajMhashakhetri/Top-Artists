@@ -18,7 +18,7 @@ export async function GET() {
 
   const data = await response.json();
 
-  const tracks: Track[] = data.items.map((item: any) => ({
+  const tracks: Track[] = data.items.map((item: {id:string,name:string,artists:{name:string}[],album:{name:string,images:{url:string}[]},uri:string}) => ({
     id: item.id,
     name: item.name,
     artist: item.artists[0]?.name || 'Unknown Artist',
