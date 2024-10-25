@@ -16,7 +16,7 @@ export function useSpotifyPlayer() {
   const [player, setPlayer] = useState<any>(null)
   const [isPaused, setIsPaused] = useState(true)
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null)
-  const [_, setDeviceId] = useState<string | null>(null)
+  const [ _ , setDeviceId] = useState<string | null>(null)
 
   useEffect(() => {
     if (window.Spotify && session?.accessToken) {
